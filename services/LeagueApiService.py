@@ -61,16 +61,18 @@ class LeagueApiService:
 
         if response.status_code == 200:
             champions = response.json()
+            if 'data' in champions:
+                for _, value in champions['data'].items():
+                    if value.get('key') == str(championId):
+                        champion_info_dto = ChampionInfoDTO(
+                            name=value['name'], 
+                            key=int(value['key'])
+                        )
+                        return champion_info_dto
+        else:
+            return {"error": "Could not get data", "status": response.status_code}
 
-            for x_key, value in champions['data'].items():
-                if value['key'] == str(championId):
-                    champion_info_dto = ChampionInfoDTO(
-                        name=value['id'],
-                        key=value['key']
-                    )
-                    return champion_info_dto
-            else:
-                return None
+
 
     @staticmethod
     def GetMatchesByPuuId(puuid: str):
@@ -107,7 +109,7 @@ class LeagueApiService:
             participant_puuid = []
             
             if 'info' in data and 'participants' in data['info']:
-                participants = data['info']['participants']  # Lista de dicionários completos
+                participants = data['info']['participants'] 
 
                 for participant in participants:
                     participant_dto = ParticipantDTO(
