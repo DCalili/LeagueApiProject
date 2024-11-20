@@ -1,14 +1,24 @@
 from flask import Flask, request, jsonify
 from services.LeagueApiService import LeagueApiService
-
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+CORS(app)
+
+CORS(app, resources={
+    r"/api/*": {
+        "origins": ["http://localhost:5000"],
+        "methods": ["GET", "POST"],
+        "allow_headers": ["Content-Type", "Authorization"]
+    }
+})
+
 
 @app.route('/')
 def home():
     return "LeagueApiProject"
 
-@app.route('/summoner', methods=['GET'])
+@app.route('/api/summoner', methods=['GET'])
 def GetSummonerByGameNameAndTag():
     name = request.args.get('name')
     tag = request.args.get('tag')
@@ -21,7 +31,7 @@ def GetSummonerByGameNameAndTag():
     return jsonify(dados_summoner)
 
 
-@app.route('/summoner/mastery', methods=['GET'])
+@app.route('/api/summoner/mastery', methods=['GET'])
 def GetChampionMasteryByPuuId():
     puuid = request.args.get('puuid')
 
@@ -32,7 +42,7 @@ def GetChampionMasteryByPuuId():
 
     return jsonify(data_mastery)
 
-@app.route('/summoner/champion', methods=['GET'])
+@app.route('/api/summoner/champion', methods=['GET'])
 def GetChampionNameByChampionId():
     championId = request.args.get('championId')
 
@@ -43,7 +53,7 @@ def GetChampionNameByChampionId():
 
     return jsonify(data_champion)
 
-@app.route('/summoner/matches', methods=['GET'])
+@app.route('/api/summoner/matches', methods=['GET'])
 def GetMatchesByPuuId():
     puuid = request.args.get('puuid')
 
@@ -54,7 +64,7 @@ def GetMatchesByPuuId():
 
     return jsonify(matchesId)
 
-@app.route('/summoner/matches/match', methods=['GET'])
+@app.route('/api/summoner/matches/match', methods=['GET'])
 def GetMatchByMatchId():
     matchId = request.args.get('matchId')
 

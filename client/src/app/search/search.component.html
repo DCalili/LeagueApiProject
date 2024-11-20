@@ -1,0 +1,13 @@
+<form #searchForm="ngForm" id="searchForm" (ngSubmit)="getAccount(searchForm.value.username, searchForm.value.tag)">
+    <input type="search" class="form me-sm-2" name="username" placeholder="Summoner Name..." ngModel #usernameInput="ngModel">
+    <input type="search" class="form me-sm-2" name="tag" placeholder="Tag..." ngModel #tagInput="ngModel">
+    <button class="btn btn-primary" type="submit" form="searchForm">Search</button>
+</form>
+
+<div *ngIf="account">
+    <h1>Summoner Name = {{account.gameName}}</h1>
+    <h1 *ngIf="champion[0]">{{champion[0].name}} Mastery Points = {{getMasterybyKey(champion[0].key)}}</h1>
+    <h1 *ngIf="champion[1]">{{champion[1].name}} Mastery Points = {{getMasterybyKey(champion[1].key)}}</h1>
+    <h1 *ngIf="champion[2]">{{champion[2].name}} Mastery Points = {{getMasterybyKey(champion[2].key)}}</h1>
+    
+</div>
