@@ -5,9 +5,36 @@
 </form>
 
 <div *ngIf="account">
-    <h1>Summoner Name = {{account.gameName}}</h1>
-    <h1 *ngIf="champion[0]">{{champion[0].name}} Mastery Points = {{getMasterybyKey(champion[0].key)}}</h1>
-    <h1 *ngIf="champion[1]">{{champion[1].name}} Mastery Points = {{getMasterybyKey(champion[1].key)}}</h1>
-    <h1 *ngIf="champion[2]">{{champion[2].name}} Mastery Points = {{getMasterybyKey(champion[2].key)}}</h1>
-    
-</div>
+    <h1 style="color: blue;">Summoner Name: {{ account.gameName }}</h1>
+  
+    <!-- Exibe mensagem de carregamento -->
+    <h2 *ngIf="isLoading">Carregando dados...</h2>
+  
+    <!-- Exibe os dados quando carregados -->
+    <div *ngIf="!isLoading">
+      <div *ngFor="let champion of championsWithMastery">
+        <h1 style="color: chartreuse;">{{ champion.name }}</h1> <h1> - Mastery Level : {{champion.championLevel}} - Mastery Points: {{ champion.championPoints }}</h1>
+      </div>
+      <div *ngFor="let match of matches">
+        <div *ngFor="for let player of match.info.participants">
+          <div *ngIf="player.puuid == account.puuid">
+            <div *ngIf="player.nexusLost == 1">
+              <h3 style="background-color: red;">
+                {{match.info.gameMode}} | {{player.championName}} : {{player.kills}} / {{player.deaths}} / {{player.assists}}
+              </h3>
+            </div>
+            <div *ngIf="player.nexusLost == 0">
+              <h3 style="background-color: green;">
+                {{match.info.gameMode}} | {{player.championName}} : {{player.kills}} / {{player.deaths}} / {{player.assists}}
+              </h3>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+   
+
+  
